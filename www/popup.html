@@ -2,9 +2,18 @@
 <html>
 <head>
 	<title>POPUP</title>
+	<script type="text/javascript">
+		var ipcRenderer = require('electron').ipcRenderer;
+		ipcRenderer.on("change-text-element",function(event,data){
+			console.log('change')
+		    // the document references to the document of the <webview>
+		    document.getElementById(data.id).innerHTML = data.text;
+		});
+	</script>
 </head>
 <body>
 	<h1>POPUP</h1>
+
 	<button id="close-button">X</button>
 	<button id="send-button">Send</button>
 	<script src="popup.js"></script>

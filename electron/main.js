@@ -7,6 +7,7 @@ const path = require('path')
 const url = require('url')
 const browserWindows = []
 const ipcMain = electron.ipcMain;
+const Promise = require('promise')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -79,15 +80,13 @@ ipcMain.on('open-popup', function (event, args) {
     }
   })
 
-  newPopup.on('focus', (event, args) => {
-    sender.send('focus-popup', newPopup)
-    newPopup.webContents.executeJavaScript(`sendWindow()`)
-  })
-
-  newPopup.once('show', (event, args) => {
-    mainWindow.webContents.send('show-popup')
-    console.log('check new popup')
-    console.log(newPopup);
+  newPopup.on('focus', function (event, args) {
+    newPopup.webContents.executeJavaScript(`new Promise(function(resolve){
+      var popDoc = focusPopup()
+      resolve(window.document)
+    })`, true).then((result) => {
+      //console.log(result)
+    })
   })
 })
 

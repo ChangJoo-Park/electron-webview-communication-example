@@ -4,7 +4,6 @@ var closeWindow = function(event) {
 
 var sendWindow = function(event) {
 	var win = window;
-	// window.opener.CallParent(win);
 	console.dir(window)
 	console.log(window.opener);
 }

@@ -28,6 +28,14 @@ ipcRenderer.on('close-popup', function (event, args) {
 	window.alert('closed')
 })
 
-ipcRenderer.on('show-popup', function (event, args) {
-	console.log('show-popup')
+ipcRenderer.on('show-popup', function (event, popup) {
+	console.log('show-popup in main renderer')
+	console.log(typeof popup)
+	// popup.executeJavaScript(`console.log('Hello from parent')`);
+})
+
+
+var newButton = document.getElementById('new--button');
+newButton.addEventListener('click', function () {
+	window.open('http://localhost:8000/popup.html')
 })
