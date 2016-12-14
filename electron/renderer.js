@@ -4,7 +4,30 @@
 var webView = document.getElementById('web-view');
 var ipcRenderer = require('electron').ipcRenderer;
 
+webView.addEventListener('did-finish-load', function (event) {
+	if(!webView.isDevToolsOpened()) {
+		webView.openDevTools()	
+	}
+	console.log('did-finish-load')
+})
+
 webView.addEventListener('new-window', function (event) {
-	var url = event.url;
-	ipcRenderer.send('open-popup', url);
+	ipcRenderer.send('open-popup', event);
+	if(!webView.isDevToolsOpened()) {
+		webView.openDevTools()	
+	}
 });
+
+ipcRenderer.on('focus-popup', function (event, args) {
+	console.log('focus popup')
+	console.dir(args)
+})
+
+
+ipcRenderer.on('close-popup', function (event, args) {
+	window.alert('closed')
+})
+
+ipcRenderer.on('show-popup', function (event, args) {
+	console.log('show-popup')
+})

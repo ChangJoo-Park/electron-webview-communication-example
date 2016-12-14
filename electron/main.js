@@ -60,5 +60,38 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 ipcMain.on('open-popup', function (event, args) {
-  
+  const newPopup = new BrowserWindow({ width: 400, height: 600 })
+  newPopup.loadURL(url.format({
+    pathname: path.join(__dirname, 'popup.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+  newPopup.webContents.openDevTools()
+  const sender = event.sender
+
+  browserWindows.push(newPopup)
+
+  // Events
+  newPopup.on('close', (event, args) => {
+    console.log('close')
+    if(!!mainWindow) {
+      sender.send('close-popup', 'ping')
+    }
+  })
+
+  newPopup.on('focus', (event, args) => {
+    sender.send('focus-popup', newPopup)
+    newPopup.webContents.executeJavaScript(`sendWindow()`)
+  })
+
+  newPopup.once('show', (event, args) => {
+    mainWindow.webContents.send('show-popup')
+    console.log('check new popup')
+    console.log(newPopup);
+  })
+})
+
+ipcMain.on('response-popup', function (event, args) {
+  console.log('response-popup')
+  console.log(args);
 });

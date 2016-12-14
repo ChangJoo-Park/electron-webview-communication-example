@@ -2,15 +2,15 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>MAIN</title>
+    <title>POPUP</title>
   </head>
   <body>
     <div id="web-view--wrapper">
-      <webview id="web-view" src="http://localhost:8000"></webview>
+      <webview id="web-view" src="http://localhost:8000/popup.html"></webview>
     </div>
   </body>
   <script>
     // You can also require other files to run in this process
-    require('./renderer.js')
+    require('./renderer-popup.js')
   </script>
 </html>
